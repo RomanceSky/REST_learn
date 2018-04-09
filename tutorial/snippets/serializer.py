@@ -13,11 +13,10 @@ from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
     snippets = serializers.PrimaryKeyRelatedField(many=True, queryset=Snippet.objects.all())
-    owner = serializers.ReadOnlyField(source='owner.username')    
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'snippets', 'owner')
+        fields = ('id', 'username', 'snippets')
 
 class JsonResponse(Response):
     def __init__(self, data=None, code=None, desc=None, status=None,
@@ -49,9 +48,11 @@ class JsonResponse(Response):
 #:使用ModelSerializer类来重写Serializer类
 
 class SnippetSerializer(serializers.ModelSerializer):
+
+   owner = serializers.ReadOnlyField(source='owner.username')    
    class Meta:
         model = Snippet
-        fields = ('id', 'title', 'code', 'desc', 'status', 'template_name','headers', 'exception', 'content_type')
+        fields = ('id', 'title', 'code', 'desc', 'status', 'template_name','headers', 'exception', 'content_type', 'owner')
 
 
 
